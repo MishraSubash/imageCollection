@@ -1,4 +1,4 @@
-# HOMEWORK: Time Series Introduction
+# Time Series Introduction
 
 ### Generate Tennis Court using the given code
 ```
