@@ -109,5 +109,5 @@ ggplot() +
 Result Explanation: 
   - The original points (blue dots) are widely spread out.
   - The conditional points (red dots) appear as a vertical band centered around 𝑋1 = 30.5 with some horizontal spread due to jittering.
-  - The distribution of X2 in the red points is tighter, concentrated around a higher mean (17), and with smaller spread compared to the full dataset probably becasue with higher variance due to correlation.
+  - The distribution of X2 in the red points is tighter, concentrated around a higher mean (around 17), and with a smaller spread compared to the full dataset probably becasue with higher variance due to correlation.
 
