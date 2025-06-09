@@ -86,4 +86,5 @@ SNR <- signal_var / noise_var2
 cat("Signal-to-noise ratio (σ² = 16):", round(SNR, 4), "\n")
 ```
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/peergraded_image2.png)
+
 **The new Signal-to-noise ratio (σ² = 16): 3.1932**
