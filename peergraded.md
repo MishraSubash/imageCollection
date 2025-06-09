@@ -90,7 +90,7 @@ cat("Signal-to-noise ratio (σ² = 16):", round(SNR, 4), "\n")
 **The new Signal-to-noise ratio (σ² = 16): 3.1932**
 
 
-## Part D
+## Part E
 ```
 # For reproducibility
 set.seed(123)  
