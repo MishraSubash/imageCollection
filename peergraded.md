@@ -88,3 +88,52 @@ cat("Signal-to-noise ratio (σ² = 16):", round(SNR, 4), "\n")
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/peergraded_image2.png)
 
 **The new Signal-to-noise ratio (σ² = 16): 3.1932**
+
+
+## Part D
+```
+# For reproducibility
+set.seed(123)  
+
+# Time vector
+t <- 0:120
+
+# True signal
+signal <- 10 * sin(t / 5)
+
+# Variance of the signal
+signal_var <- var(signal)
+
+# Process 1: noise with variance 4
+noise1 <- rnorm(length(t), mean = 0, sd = 2)
+x1 <- signal + noise1
+snr1 <- signal_var / var(noise1)
+
+# Process 2: noise with variance 16
+noise2 <- rnorm(length(t), mean = 0, sd = 4)
+x2 <- signal + noise2
+snr2 <- signal_var / var(noise2)
+
+# Expected value at t = 45
+t_val <- 45
+expected_val <- 10 * sin(t_val / 5)
+
+# Observed values at t = 45 
+obs1 <- x1[t_val + 1] 
+obs2 <- x2[t_val + 1]
+
+# Print summary
+cat("Signal Variance:", round(signal_var, 4), "\n")
+cat("SNR (Process 1):", round(snr1, 4), "\n")
+cat("SNR (Process 2):", round(snr2, 4), "\n")
+cat("Expected Value at t=45:", round(expected_val, 4), "\n")
+cat("Observed Value at t=45 (Process 1):", round(obs1, 4), "\n")
+cat("Observed Value at t=45 (Process 2):", round(obs2, 4), "\n")
+```
+
+| Feature  | Process 1 (σ² = 4) | Process 2 (σ² = 16)  | Reason for Similarity/Difference |
+| ------------- |:-------------:|------------- |:-------------:|
+| Period      | 31.42    |31.42      | Same value as both are determined solely by given function     |
+| Signal-to-Noise Ratio     | 16.0983     |3.3066      |Higher Noise equates to lower SNR     |
+| Expected Value at t=45| 4.1212     |4.1212      | Mean is unaffected by noise variance     |
+| Observed Value at t=45      | 1.875     |6.6675      | Higher Noise increase variance     |
