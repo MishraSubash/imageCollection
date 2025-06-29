@@ -1,7 +1,7 @@
 # Spatial Point Patterns and Processes
 
 ### Part A
-USing Chicago Crime Data associated to Year 2024 sourced from the City of Chicago's official data portal: https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present
+USing Chicago Crime Data associated to Year 2024 sourced from the City of Chicago's official data portal: [](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/about_data)
  - Type of data: Crime incident reports from across Chicago.
  - Fields used:
     - ```ID```: Unique identifier for each crime incident.
