@@ -32,6 +32,7 @@ leaflet(data = supermarkets) %>%
   )
   ```
 **Leaflet Plot of Chicago Supermarket Locations**
+
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/Rplot_LeafLet%20Plot.png)
 
 **Why no supermarkets in the top right corner?**
