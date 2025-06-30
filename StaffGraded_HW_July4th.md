@@ -1,23 +1,20 @@
 # STAFF-GRADED HOMEWORK: Spatial Point Patterns and Processes
 
 ### Part A
-```library(leaflet)
+```
+library(leaflet)
+
 # Load data
 data <- read.csv("chi_markets.csv")
 lon <- data$lon
 lat <- data$lat
 
-# Create dataframe
-supermarkets <- data.frame(
-  lat = lat,
-  lon = lon
-)
 
 # Calculate bounding box
-min_lon <- min(supermarkets$lon)
-max_lon <- max(supermarkets$lon)
-min_lat <- min(supermarkets$lat)
-max_lat <- max(supermarkets$lat)
+min_lon <- min(lon)
+max_lon <- max(lon)
+min_lat <- min(lat)
+max_lat <- max(lat)
 
 # Create leaflet map with rectangle
 leaflet(data = supermarkets) %>%
