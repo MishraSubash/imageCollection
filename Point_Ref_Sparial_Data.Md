@@ -48,15 +48,15 @@ summary_fit <- summary(fit)
 intercept <- coef(fit)[1]
 slope <- coef(fit)[2]
 cat("Estimated regression equation:\n")
-cat("sqrt(rainfall) =", round(intercept, 3), "+", round(slope, 3), "* altitude_miles\n\n")
+cat("sqrt(rainfall) =", round(intercept, 3), "+", round(slope, 3), "* altitude_miles)
 
 # Estimated error variance (residual variance)
 sigma2_hat <- summary_fit$sigma^2
-cat("Estimated error variance:", round(sigma2_hat, 3), "\n\n")
+cat("Estimated error variance:", round(sigma2_hat, 3)")
 
 # Proportion of variation explained (R-squared)
 r2 <- summary_fit$r.squared
-cat("Proportion of variation explained (R^2):", round(r2, 3), "\n")
+cat("Proportion of variation explained (R^2):", round(r2, 3))
 ```
 - Estimated regression equation: = 14.127 - 8.368 * altitude_miles
 - Estimated error variance: 18.28
@@ -252,7 +252,7 @@ cat("Non-spatial model AIC:", round(AIC_non_spatial, 2), "\n")
 
 # Spatial model (fitted using geoR)
 loglik_spatial <- fit_geo$loglik
-num_params_spatial <- 4  # β₀, β₁, σ², ϕ
+num_params_spatial <- 4  # β0, β1, Sigma Sq and Phi
 
 AIC_spatial <- -2 * loglik_spatial + 2 * num_params_spatial
 cat("Spatial model AIC:", round(AIC_spatial, 2), "\n")
