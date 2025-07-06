@@ -39,6 +39,7 @@ So, the map suggests that both variables display clear spatial autocorrelation, 
 ```
 # Fit linear model: sqrt(rainfall) in altitude_miles
 df$sqrt_rainfall <- sqrt(df$rainfall)
+df$altitude_miles <- df$altitude / 5280  # 5280ft = 1 Mile
 fit <- lm(sqrt_rainfall ~ altitude_miles, data = df)
 
 # Model summary
@@ -93,6 +94,7 @@ hist_plot
 
 ```
 # Compute residuals
+# 5280 ft = 1 Miles
 df$altitude_miles <- df$altitude / 5280
 df$sqrt_rainfall <- sqrt(df$rainfall)
 
@@ -203,7 +205,7 @@ phi <- fit_geo$phi
 cat("\nEstimated intercept (beta0):", round(beta0, 3), "\n")
 cat("Estimated slope (beta1):", round(beta1, 3), "\n")
 cat("Estimated sigma^2:", round(sigma2, 3), "\n")
-cat("Estimated phi:", round(phi, 3), "\n")
+cat("Estimated phi:", round(phi, 3))
 
 ```
 - Estimated intercept (β0) : 11.597
@@ -217,14 +219,14 @@ Using previously defined bin_summary$bin_center and bin_summary$cor from part D
 # Drop any NA or missing correlations
 empirical <- na.omit(bin_summary)
 
-# Fit exponential model: cor ≈ exp(-h/phi)
+# Fit exponential model
 exp_model <- nls(cor ~ exp(-bin_center / phi),
                  data = empirical,
                  start = list(phi = 100))  # starting guess
 
 # Extract fitted phi
 phi_hat <- coef(exp_model)[["phi"]]
-cat("Estimated phi:", round(phi_hat, 2), "\n")
+cat("Estimated phi:", round(phi_hat, 2))
 
 # Add fitted line to the scatter plot
 ggplot(empirical, aes(x = bin_center, y = cor, size = n_pairs)) +
@@ -248,14 +250,14 @@ ggplot(empirical, aes(x = bin_center, y = cor, size = n_pairs)) +
 # Non-spatial Model
 fit <- lm(sqrt_rainfall ~ df$altitude_miles, data = df)
 AIC_non_spatial <- AIC(fit)
-cat("Non-spatial model AIC:", round(AIC_non_spatial, 2), "\n")
+cat("Non-spatial model AIC:", round(AIC_non_spatial, 2))
 
 # Spatial model (fitted using geoR)
 loglik_spatial <- fit_geo$loglik
 num_params_spatial <- 4  # β0, β1, Sigma Sq and Phi
 
 AIC_spatial <- -2 * loglik_spatial + 2 * num_params_spatial
-cat("Spatial model AIC:", round(AIC_spatial, 2), "\n")
+cat("Spatial model AIC:", round(AIC_spatial, 2))
 ```
 - Non-spatial model AIC: 578.35
 - Spatial model AIC: 503.49
