@@ -10,7 +10,9 @@ library(leaflet)
 library(gridExtra)
 
 df = read.csv("rain.txt", sep = "\t")
-# plot: Rainfall = color, Altitude = size
+df$altitude_miles <- df$altitude / 5280  # 5280fr = 1 Miles
+
+# plot Rainfall = color, Altitude = size
 combined_plot <- ggplot(df, aes(x = x, y = y)) +
   geom_point(aes(color = rainfall, size = altitude_miles), alpha = 0.8) +
   scale_color_gradient(low = "lightblue", high = "darkblue") +
