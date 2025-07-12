@@ -1,49 +1,49 @@
 # Matrix Norms and Eigenvalues
 
 **(a) Is this matrix dense or sparse? Is it symmetric?**
-  - Sparsity: 6x6 = 36 elements, 30 zeros => 83% zeros => Matrix is SPARSE.
-  - Symmetry: Diagonal matrix => A = A^T => Matrix is SYMMETRIC.
+        
+        Sparsity: 6x6 = 36 elements, 30 zeros => 83% zeros => Matrix is SPARSE.
+        Symmetry: Diagonal matrix => A = A^T => Matrix is SYMMETRIC.
 
 
 **(b) Eigenvalues and Eigenvectors**
-  - Eigenvalues: {2, 1.5, -3, -1, 0.5, -0.5}
-  - Eigenvectors: The eigenvectors are the standard basis vectors:
 
-	- v_1 = (1,0,0,0,0,0)^T
-	- v_2 = (0,1,0,0,0,0)^T
-	- v_3 = (0,0,1,0,0,0)^T
-	- v_4 = (0,0,0,1,0,0)^T
-	- v_5 = (0,0,0,0,1,0)^T
-	- v_6 = (0,0,0,0,0,1)^T
+*The eigenvectors are presented in transposed form because it was challenging to write them vertically while converting to PDF*
 
-**Explanation for not showing work for all:** 
+
+	- Eigenvalue 2; Eigenvector: (1,0,0,0,0,0)^T
+	- Eigenvalue 1.5; Eigenvector:(0,1,0,0,0,0)^T
+	- Eigenvalue -3; Eigenvector: (0,0,1,0,0,0)^T
+	- Eigenvalue -1; Eigenvector:(0,0,0,1,0,0)^T
+	- Eigenvalue 0.5; Eigenvector: (0,0,0,0,1,0)^T
+	- Eigenvalue -0.5; Eigenvector: (0,0,0,0,0,1)^T
+
+**Explanation for not showing work:** 
 
 For a diagonal matrix, the properties of eigenvalues and eigenvectors are straightforward: the eigenvalues are precisely the diagonal entries, and the corresponding eigenvectors are the standard basis vectors. This pattern holds for all diagonal entries, making redundant calculations unnecessary.
 
 **(c) Computation of Frobenius, Operator, and Nuclear norms of the matrix**
 - **Frobenius Norm:** The Frobenius norm is the square root of the sum of the squares of the diagonal elements. 
 
-Frobenius Norm = √[(2^2+ (1.)^2+(-3)^2+(-1)^2+ (0.5)^2+(-0.5)^2 )] = 4.1
+      Frobenius Norm = √[(2^2+ (1.)^2+(-3)^2+(-1)^2+ (0.5)^2+(-0.5)^2 )] = 4.1
 
 - **Operator Norm:** The operator norm is the largest singular value of the matrix.
 
-Max singular value = max |eigenvalue| 
+      Max singular value = max |eigenvalue| 
 
-Operator Norm (||A||_2)  = 3
+      Operator Norm (||A||_2)  = 3
 
 - **Nuclear Norm:** The sum of all singular values of the matrix
 
-Sum of singular values 		= sum of absolute eigenvalues
-
-=  2 + 1.5 + 3 + 1 + 0.5 + 0.5 
-
-= 8.5
+      Sum of singular values    = sum of absolute eigenvalues
+                                =  2 + 1.5 + 3 + 1 + 0.5 + 0.5 
+                                = 8.5
 
 **(d) Compare the largest eigenvalue in part b to the operator norm in part c. Are they equal? Why or why not?**
 
-The largest eigenvalue is max (λ_i) = max ({2, 1.5, −3, −1 ,0.5, −0.5 })   = 2
+      The largest eigenvalue is max (λ_i) = max ({2, 1.5, −3, −1 ,0.5, −0.5 })   = 2
 
-Operator norm: 3
+      Operator norm: 3
 
 They are not equal. 
 
