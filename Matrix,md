@@ -1,0 +1,770 @@
+# Matrix Norms and Eigenvalues
+
+**(a) Is this matrix dense or sparse? Is it symmetric?**
+  - Sparsity: 6x6 = 36 elements, 30 zeros => 83% zeros => Matrix is SPARSE.
+  - Symmetry: Diagonal matrix => A = A^T => Matrix is SYMMETRIC.
+
+
+**(b) Eigenvalues and Eigenvectors**
+  - Eigenvalues: {2, 1.5, -3, -1, 0.5, -0.5}
+  - Eigenvectors: The eigenvectors are the standard basis vectors:
+
+	- v_1 = (1,0,0,0,0,0)^T
+	- v_2 = (0,1,0,0,0,0)^T
+	- v_3 = (0,0,1,0,0,0)^T
+	- v_4 = (0,0,0,1,0,0)^T
+	- v_5 = (0,0,0,0,1,0)^T
+	- v_6 = (0,0,0,0,0,1)^T
+
+**Explanation for not showing work for all:** 
+
+For a diagonal matrix, the properties of eigenvalues and eigenvectors are straightforward: the eigenvalues are precisely the diagonal entries, and the corresponding eigenvectors are the standard basis vectors. This pattern holds for all diagonal entries, making redundant calculations unnecessary.
+
+**(c) Computation of Frobenius, Operator, and Nuclear norms of the matrix**
+- **Frobenius Norm:** The Frobenius norm is the square root of the sum of the squares of the diagonal elements. 
+
+Frobenius Norm = √[(2^2+ (1.)^2+(-3)^2+(-1)^2+ (0.5)^2+(-0.5)^2 )] = 4.1
+
+- **Operator Norm:** The operator norm is the largest singular value of the matrix.
+
+Max singular value = max |eigenvalue| 
+
+Operator Norm (||A||_2)  = 3
+
+- **Nuclear Norm:** The sum of all singular values of the matrix
+
+Sum of singular values 		= sum of absolute eigenvalues
+
+=  2 + 1.5 + 3 + 1 + 0.5 + 0.5 
+
+= 8.5
+
+**(d) Compare the largest eigenvalue in part b to the operator norm in part c. Are they equal? Why or why not?**
+
+The largest eigenvalue is max (λ_i) = max ({2, 1.5, −3, −1 ,0.5, −0.5 })   = 2
+
+Operator norm: 3
+
+They are not equal. 
+
+**Why or why not?**
+For a general matrix, the operator norm is defined as the largest singular value, not necessarily the largest eigenvalue. Singular values are always non-negative. While the eigenvalues can be negative, the singular values are the absolute values of the eigenvalues for symmetric matrices. In this case, the largest singular value (3) comes from the eigenvalue -3 (i.e., ∣−3∣=3), which is larger than the largest positive eigenvalue (2). Therefore, the largest eigenvalue (2) is not equal to the operator norm (3) because the operator norm considers the magnitude of the eigenvalues.
+
+
+## Python Code: 
+```
+import numpy as np
+
+# Given matrix A
+A = np.diag([2, 1.5, -3, -1, 0.5, -0.5])
+
+print("Matrix A:")
+print(A)
+
+# a. Dense or Sparse, Symmetric?
+# Count zeros to check sparsity
+total_elements = A.size
+zero_elements = np.count_nonzero(A == 0)
+sparsity = zero_elements / total_elements
+
+print(f"\nSparsity: {sparsity*100:.2f}%")
+print(f"Is symmetric? {np.allclose(A, A.T)}")
+
+# b. Eigenvalues & eigenvectors
+eigvals, eigvecs = np.linalg.eig(A)
+
+print("\nEigenvalues:")
+print(eigvals)
+
+print("\nEigenvectors (columns):")
+print(eigvecs)
+
+# c. Norms
+
+# Frobenius Norm
+fro_norm = np.linalg.norm(A, 'fro')
+
+# Operator Norm (2-norm)
+operator_norm = np.linalg.norm(A, 2)
+
+# Nuclear Norm 
+# For diagonal symmetric: sum of absolute eigenvalues
+nuclear_norm = np.sum(np.abs(eigvals))
+
+print(f"\nFrobenius Norm: {fro_norm:.4f}")
+print(f"Operator Norm: {operator_norm:.4f}")
+print(f"Nuclear Norm: {nuclear_norm:.4f}")
+
+# d. Compare largest eigenvalue and operator norm
+largest_eigenvalue = np.max(eigvals)
+print(f"\nLargest  Eigenvalue: {largest_eigenvalue}")
+print(f"Operator Norm: {operator_norm}")
+
+if np.isclose(largest_eigenvalue, operator_norm):
+    print("They are equal. For symmetric matrices, the operator norm equals the largest eigenvalue.")
+else:
+    print("They are NOT equal!")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Part A
+```library(leaflet)
+# Load required libraries
+library(ggplot2)
+library(mapproj)
+library(geoR)
+library(leaflet)
+library(gridExtra)
+
+df = read.csv("rain.txt", sep = "\t")
+# plot: Rainfall = color, Altitude = size
+combined_plot <- ggplot(df, aes(x = x, y = y)) +
+  geom_point(aes(color = rainfall, size = altitude_miles), alpha = 0.8) +
+  scale_color_gradient(low = "lightblue", high = "darkblue") +
+  scale_size(range = c(2, 8)) +
+  labs(
+    title = "Spatial Variation of Rainfall (color) and Altitude (size)",
+    x = "x",
+    y = "y",
+    color = "Rainfall (mm)",
+    size = "Altitude (miles)"
+  ) +
+  theme_minimal()
+
+# Display
+combined_plot
+  ```
+**Exploratory plots showing the spatial variation in rainfall and altitude**
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/RplotPart1.png)
+**Conclusion:** 
+
+There appears to be spatial dependence in both average rainfall and altitude: nearby locations tend to have similar colors and sizes, indicating that rainfall and altitude values are not randomly scattered but vary smoothly across space. Specifically, regions with higher rainfall (darker blue) often cluster together, and larger point sizes (higher altitude in miles) also show some clustering, suggesting a possible relationship between terrain elevation and rainfall patterns in this region.
+
+So, the map suggests that both variables display clear spatial autocorrelation, a key sign of spatial structure.
+
+# Part B
+```
+# Fit linear model: sqrt(rainfall) in altitude_miles
+df$sqrt_rainfall <- sqrt(df$rainfall)
+fit <- lm(sqrt_rainfall ~ altitude_miles, data = df)
+
+# Model summary
+summary_fit <- summary(fit)
+
+# Estimated regression equation
+intercept <- coef(fit)[1]
+slope <- coef(fit)[2]
+cat("Estimated regression equation:\n")
+cat("sqrt(rainfall) =", round(intercept, 3), "+", round(slope, 3), "* altitude_miles\n\n")
+
+# Estimated error variance (residual variance)
+sigma2_hat <- summary_fit$sigma^2
+cat("Estimated error variance:", round(sigma2_hat, 3), "\n\n")
+
+# Proportion of variation explained (R-squared)
+r2 <- summary_fit$r.squared
+cat("Proportion of variation explained (R^2):", round(r2, 3), "\n")
+```
+- Estimated regression equation: = 14.127 - 8.368 * altitude_miles
+- Estimated error variance: 18.28
+- Proportion of variation explained (R^2): 0.031
+
+
+# Part C
+```
+# Compute pairwise Euclidean distances
+dist_matrix <- as.matrix(dist(df[, c("x", "y")], method = "euclidean"))
+
+# Extract upper triangle distances (excluding diagonal zeros)
+distances <- dist_matrix[upper.tri(dist_matrix)]
+
+# Create data frame for ggplot
+dist_df <- data.frame(distance = distances)
+
+# Plot relative frequency histogram with binwidth = 20 miles
+hist_plot <- ggplot(dist_df, aes(x = distance)) +
+  geom_histogram(aes(y = ..density..), binwidth = 20, fill = "steelblue", color = "black") +
+  labs(
+    title = "Relative Frequency Histogram of Euclidean Distances",
+    x = "Distance (miles)",
+    y = "Relative Frequency"
+  ) +
+  theme_minimal()
+
+# Display plot
+hist_plot
+```
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/Rplot_partc.png)
+
+## Part D
+
+```
+# Compute residuals
+df$altitude_miles <- df$altitude / 5280
+df$sqrt_rainfall <- sqrt(df$rainfall)
+
+fit <- lm(sqrt_rainfall ~ altitude_miles, data = df)
+df$residuals <- resid(fit)
+
+# Compute pairwise distances and residual products
+n <- nrow(df)
+dist_matrix <- as.matrix(dist(df[, c("x", "y")], method = "euclidean"))
+
+# Make empty data frame to store pairwise info
+pairs <- data.frame(
+  i = integer(),
+  j = integer(),
+  distance = numeric(),
+  resid_i = numeric(),
+  resid_j = numeric()
+)
+
+# Extract upper triangle only (i < j)
+for (i in 1:(n - 1)) {
+  for (j in (i + 1):n) {
+    pairs <- rbind(pairs, data.frame(
+      i = i,
+      j = j,
+      distance = dist_matrix[i, j],
+      resid_i = df$residuals[i],
+      resid_j = df$residuals[j]
+    ))
+  }
+}
+
+# Define distance bins and bin centers
+bin_edges <- seq(0, 300, by = 20)
+bin_centers <- bin_edges[-length(bin_edges)] + 10  # center of each bin
+
+# Assign bins to pairs
+pairs$bin <- cut(pairs$distance,
+                 breaks = bin_edges,
+                 right = FALSE,
+                 labels = bin_centers)
+
+# Compute correlation per bin
+bin_summary <- pairs %>%
+  group_by(bin) %>%
+  summarise(
+    cor = ifelse(length(resid_i) > 1,
+                 cor(resid_i, resid_j),
+                 NA_real_),
+    n_pairs = n()
+  ) %>%
+  filter(!is.na(bin))
+
+# Make sure bin is numeric for plotting
+bin_summary$bin_center <- as.numeric(as.character(bin_summary$bin))
+
+# Plot: bin center vs correlation, size by number of pairs
+ggplot(bin_summary, aes(x = bin_center, y = cor, size = n_pairs)) +
+  geom_point(color = "steelblue", alpha = 0.7) +
+  labs(
+    title = "Correlation of Residuals vs Distance Bin Center",
+    x = "Distance Bin Center (miles)",
+    y = "Correlation of Residuals",
+    size = "Number of Pairs"
+  ) +
+  theme_minimal()
+
+```
+
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/Rplot_PartD.png)
+
+## Part E
+There are fewer pairs of locations in the longer-distance bins because, in any fixed study area, there are naturally more location pairs that are close together than far apart. For example, when locations are clustered or spread out over a limited region, it is more likely to find pairs separated by moderate distances (like 80–100 miles) than by very large distances (like 280–300 miles). The maximum distance is limited by the geographic extent of the region, so only a few pairs can span that full range, resulting in fewer pairs in the largest distance bins.
+
+## Part F
+```
+# Load geoR
+library(geoR)
+
+# Coordinates:
+coords <- as.matrix(df[, c("x", "y")])
+
+# Data: sqrt(rainfall)
+data_response <- df$sqrt_rainfall
+
+# Covariate: altitude in miles
+covariates <- data.frame(altitude_miles = df$altitude_miles)
+
+# Create geodata object
+geo_data <- as.geodata(cbind(df$x, df$y, data_response), covariate = covariates)
+
+# Fit normal spatial linear model with exponential covariance and no nugget
+fit_geo <- likfit(
+  geodata = geo_data,
+  trend = ~ df$altitude_miles,
+  ini.cov.pars = c(10, 100),  # initial guesses: (sigma2, phi)
+  cov.model = "exponential",
+  nugget = 0,
+  lik.method = "ML"
+)
+
+# Extract key estimates
+beta0 <- fit_geo$beta[1]
+beta1 <- fit_geo$beta[2]
+sigma2 <- fit_geo$sigmasq
+phi <- fit_geo$phi
+
+cat("\nEstimated intercept (beta0):", round(beta0, 3), "\n")
+cat("Estimated slope (beta1):", round(beta1, 3), "\n")
+cat("Estimated sigma^2:", round(sigma2, 3), "\n")
+cat("Estimated phi:", round(phi, 3), "\n")
+
+```
+- Estimated intercept (β0) : 11.597
+- Estimated slope (β1),  : 0.029
+- Covariance parameters (σ^2, ϕ): (20.973, 42.407)
+
+## Part G
+```
+Using previously defined bin_summary$bin_center and bin_summary$cor from part D
+
+# Drop any NA or missing correlations
+empirical <- na.omit(bin_summary)
+
+# Fit exponential model: cor ≈ exp(-h/phi)
+exp_model <- nls(cor ~ exp(-bin_center / phi),
+                 data = empirical,
+                 start = list(phi = 100))  # starting guess
+
+# Extract fitted phi
+phi_hat <- coef(exp_model)[["phi"]]
+cat("Estimated phi:", round(phi_hat, 2), "\n")
+
+# Add fitted line to the scatter plot
+ggplot(empirical, aes(x = bin_center, y = cor, size = n_pairs)) +
+  geom_point(color = "steelblue", alpha = 0.7) +
+  stat_function(fun = function(h) exp(-h / phi_hat),
+                color = "red",
+                linetype = "dashed",
+                size = 1) +
+  labs(
+    title = "Correlation of Residuals with Fitted Exponential Model",
+    x = "Distance Bin Center (miles)",
+    y = "Correlation of Residuals",
+    size = "Number of Pairs"
+  ) +
+  theme_minimal()
+```
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/Rplot_Part_G.png)
+
+## Part H
+```
+# Non-spatial Model
+fit <- lm(sqrt_rainfall ~ df$altitude_miles, data = df)
+AIC_non_spatial <- AIC(fit)
+cat("Non-spatial model AIC:", round(AIC_non_spatial, 2), "\n")
+
+# Spatial model (fitted using geoR)
+loglik_spatial <- fit_geo$loglik
+num_params_spatial <- 4  # β₀, β₁, σ², ϕ
+
+AIC_spatial <- -2 * loglik_spatial + 2 * num_params_spatial
+cat("Spatial model AIC:", round(AIC_spatial, 2), "\n")
+```
+- Non-spatial model AIC: 578.35
+- Spatial model AIC: 503.49
+
+
+## Part I 
+In addition to the coordinates, I would need relevant predictor variables that influence rainfall. For instance, altitude, slope, aspect, distance to mountains, or proximity to moisture sources. These covariates help explain local variation in rainfall and improve the accuracy of predictions at unmonitored locations when using spatial regression or kriging models.
+
+
+**Chi-Squared Test:**
+
+```Quadrat counts:```
+- Q1: 24,171
+- Q2: 114,318
+- Q3: 5,262
+- Q4: 103,604
+
+**Chi-squared test:**
+- Chi-squared statistic = 131,178
+- Degrees of freedom = 3
+- p-value < 2.2e-16
+
+**Interpretation:**
+
+The quadrat counts show huge differences in the number of crime points across the four quadrants. For example, Quadrant 2 and Quadrant 4 have very large counts, while Quadrant 1 and Quadrant 3 have relatively few. If the point pattern were generated by a homogeneous Poisson process, we would expect the counts in each quadrat to be approximately equal or closer to each other.
+
+The extremely large chi-squared statistic (131,178) and the very small p-value (< 2.2e-16) provide strong evidence against the null hypothesis of homogeneous Poisson process. This means the differences between quadrats are far greater than we’d expect by random chance alone.
+
+**Complete Code:**
+```
+library(spatstat)
+# Read data 
+data <- read.csv("chicago_crimes_2024.csv")
+
+# Create vectors for the sample coordinates
+latitude <- data$Latitude
+longitude <- data$Longitude
+
+# Define window limits a bit larger than min/max
+xrange <- range(longitude) + c(-0.005, 0.005)
+yrange <- range(latitude) + c(-0.005, 0.005)
+
+# Create window object
+win <- owin(xrange = xrange, yrange = yrange)
+
+# Create point pattern
+pp <- ppp(x = longitude, y = latitude, window = win)
+
+#Plot
+
+plot(pp,
+     main = "Chicago Crime Spatial Point Pattern (2024)",
+     cols = "blue", 
+     pch = 10,    
+     cex = 0.05, 
+     lwd = 1)       
+
+# Divide region into quadrants (2 x 2)
+Q <- quadratcount(pp, nx = 2, ny = 2)
+
+# Plot the quadrat counts
+plot(pp, main = "Quadrat Count Plot (2x2)")
+plot(Q, add = TRUE, col = "red")
+
+# Chi-squared test
+qt <- quadrat.test(pp, nx = 2, ny = 2)
+print(qt)
+```
+
+best_aic <- Inf
+best_model_fit <- NULL
+num_runs <- 50
+
+cat("Fitting Poisson HMM with 2 states multiple times...\n")
+for (i in 1:num_runs) {
+  set.seed(i)
+  mod <- depmix(response = polio_cases ~ 1, family = poisson(), nstates = 2,
+                data = data.frame(polio_cases = polio_cases))
+  fm_try <- try(fit(mod, verbose = FALSE), silent = TRUE)
+  
+  if (!inherits(fm_try, "try-error")) {
+    current_aic <- AIC(fm_try)
+    if (current_aic < best_aic) {
+      best_aic <- current_aic
+      best_model_fit <- fm_try
+      cat(sprintf("Run %d: New best AIC = %.2f\n", i, best_aic))
+    }
+  } else {
+    cat(sprintf("Run %d: Fit failed (could not converge).\n", i))
+  }
+}
+
+if (is.null(best_model_fit)) {
+  stop("No model converged successfully after multiple runs. Consider increasing num_runs or checking data/model specification.")
+}
+
+cat("\nBest HMM model selected with AIC:", AIC(best_model_fit), "\n")
+
+# Extract parameters
+all_pars <- getpars(best_model_fit)
+
+p12_logit <- all_pars[1]
+p21_logit <- all_pars[2]
+
+p12 <- plogis(p12_logit)
+p11 <- 1 - p12
+p21 <- plogis(p21_logit)
+p22 <- 1 - p21
+
+Gamma_matrix <- matrix(c(p11, p12,
+                         p21, p22), byrow = TRUE, nrow = 2)
+
+print(Gamma_matrix)
+
+lambda_state1_log <- all_pars[3]
+lambda_state2_log <- all_pars[4]
+
+lambda_state1 <- exp(lambda_state1_log)
+lambda_state2 <- exp(lambda_state2_log)
+
+
+cat("Lambda for State 1: ", lambda_state1, "\n")
+cat("Lambda for State 2: ", lambda_state2, "\n")
+
+if (lambda_state1 > lambda_state2) {
+  plot_lambda_low <- lambda_state2
+  plot_lambda_high <- lambda_state1
+} else {
+  plot_lambda_low <- lambda_state1
+  plot_lambda_high <- lambda_state2
+}
+
+# Determine the Most Likely State at Each Month
+post_probs <- posterior(best_model_fit)
+most_likely_state_idx <- apply(post_probs[, c("S1", "S2")], 1, which.max)
+
+all_pars <- getpars(best_model_fit)
+lambda_state1_log <- all_pars[3]
+lambda_state2_log <- all_pars[4]
+
+lambda_val_S1 <- exp(lambda_state1_log)
+lambda_val_S2 <- exp(lambda_state2_log)
+
+if (lambda_val_S1 < lambda_val_S2) {
+  most_likely_state_labels <- factor(most_likely_state_idx, levels = c(1, 2),
+                                     labels = c("State 1 (Low Cases)", "State 2 (High Cases)"))
+  plot_lambda_low <- lambda_val_S1
+  plot_lambda_high <- lambda_val_S2
+} else {
+  most_likely_state_labels <- factor(most_likely_state_idx, levels = c(1, 2),
+                                     labels = c("State 2 (High Cases)", "State 1 (Low Cases)"))
+  plot_lambda_low <- lambda_val_S2
+  plot_lambda_high <- lambda_val_S1
+}
+
+# Create Time Series Plot with Most Likely States
+plot_df <- data.frame(
+  Date = time_dates,
+  PolioCases = polio_cases,
+  MostLikelyState = most_likely_state_labels
+)
+
+ggplot(plot_df, aes(x = Date, y = PolioCases)) +
+  geom_line(aes(color = MostLikelyState), size = 0.8) +
+  geom_point(aes(color = MostLikelyState), size = 1.5, alpha = 0.7) +
+  labs(
+    title = "Monthly Polio Cases (1970-1983) with Hidden HMM States",
+    subtitle = paste0("AIC: ", round(AIC(best_model_fit), 2),
+                      " | State 1 (Low Cases) Lambda: ", round(plot_lambda_low, 2),
+                      " | State 2 (High Cases) Lambda: ", round(plot_lambda_high, 2)),
+    x = "Date",
+    y = "Number of Polio Cases"
+  ) +
+  scale_color_manual(name = "Most Likely State",
+                     values = c("State 1 (Low Cases)" = "blue", "State 2 (High Cases)" = "red")) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+
+```
+**Best AIC: 530.0655**
+
+**State Transition Probability Matrix (Gamma)**
+
+|  | toS1  | toS2  |
+|-----------|-------|-------|
+| from S1    | 0.5 | 0.5 |
+| from S2    | 0.731 | 0.268 |
+
+**Estimate of lambda (rate parameter) for each hidden state**
+| State | Re1.(Intercept) |
+|--------|----------------|
+| State 1    | 1.95        |
+| State 2    | 1.39         |
+
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/RplotOriginal_PeerGraded.png)
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/Rplot_peerGraded_Fig_A.png)
+
+## Part B
+From the Part A, we got the λ values of 1.95 for state 1 and 1.39 for state 2. Higher λ value indicates to periods with a higher average number of polio cases. 
+
+Likelihood of Future Observations: 
+Given an observation of a least 4 polio cases at time t, we are likely in the state with higher mean, which is state 1 (λ = 1.95) in this updated scenario. 
+
+Consistency with General Knowledge about Infectious Disease Dynamics:
+This finding is consistent with general knowledge of infectious disease dynamics. Once a disease outbreak is in a higher activity phase (indicated by ≥4 cases and being in the higher λ state), it typically exhibits some persistence. Cases are more likely to remain present (e.g., at least two cases) in the immediate subsequent period rather than abruptly dropping to zero. The model's higher probability of remaining in the "active" state and emitting a moderate number of cases reflects this inertia in disease spread.
+
+
+## Part C
+```
+library(ggplot2)
+library(gridExtra)
+library(dlm)
+library(tidyverse)
+library(xts)
+library(depmixS4)
+library(gamlss.data)
+
+data(polio)
+polio_cases <- as.numeric(polio)
+n_obs <- length(polio_cases)
+time_dates <- seq(from = as.Date("1970-01-01"), to = as.Date("1983-12-01"), by = "month")
+
+if (length(time_dates) != n_obs) {
+  stop("Mismatch between number of observations and generated dates. Please check data.")
+}
+
+cat("Polio data loaded: ", n_obs, " observations from ",
+    format(min(time_dates), "%Y-%m"), " to ", format(max(time_dates), "%Y-%m"), "\n\n")
+
+best_aic <- Inf
+best_model_fit <- NULL
+num_runs <- 100
+
+cat("Fitting Poisson HMM with 3 states multiple times...\n")
+for (i in 1:num_runs) {
+  set.seed(i)
+  mod <- depmix(response = polio_cases ~ 1, family = poisson(), nstates = 3,
+                data = data.frame(polio_cases = polio_cases))
+  fm_try <- try(fit(mod, verbose = FALSE), silent = TRUE)
+  
+  if (!inherits(fm_try, "try-error")) {
+    current_aic <- AIC(fm_try)
+    if (is.finite(current_aic) && current_aic < best_aic) {
+      best_aic <- current_aic
+      best_model_fit <- fm_try
+      cat(sprintf("Run %d: New best AIC = %.2f\n", i, best_aic))
+    }
+  }
+}
+
+if (is.null(best_model_fit)) {
+  stop("No model converged successfully after multiple runs or all resulted in high AIC. Consider increasing num_runs or checking data/model specification.")
+}
+
+cat("\nBest HMM model selected with AIC:", AIC(best_model_fit), "\n")
+
+cat("\nModel Fitting Results (3 States)\n")
+current_aic_report <- AIC(best_model_fit)
+cat("AIC of the best fitted HMM: ", current_aic_report, "\n")
+
+if (current_aic_report < 531) {
+  cat("The AIC is less than 531, meeting the hint's criterion.\n")
+} else {
+  cat("The AIC is NOT less than 531. Consider increasing num_runs or refining the model.\n")
+}
+
+all_pars <- getpars(best_model_fit)
+
+lambda_state1 <- exp(all_pars[7])
+lambda_state2 <- exp(all_pars[8])
+lambda_state3 <- exp(all_pars[9])
+lambda_values <- c(State1 = lambda_state1, State2 = lambda_state2, State3 = lambda_state3)
+sorted_lambdas <- sort(lambda_values)
+
+cat("\nEstimate of lambda (rate parameter) for each hidden state:\n")
+cat("  State corresponding to lowest lambda: ", names(sorted_lambdas[1]), " (λ = ", round(sorted_lambdas[1], 4), ")\n", sep="")
+cat("  State corresponding to medium lambda: ", names(sorted_lambdas[2]), " (λ = ", round(sorted_lambdas[2], 4), ")\n", sep="")
+cat("  State corresponding to highest lambda: ", names(sorted_lambdas[3]), " (λ = ", round(sorted_lambdas[3], 4), ")\n", sep="")
+
+Gamma_matrix <- matrix(NA, nrow = 3, ncol = 3,
+                       dimnames = list(c("From S1", "From S2", "From S3"),
+                                       c("To S1", "To S2", "To S3")))
+
+trans_params <- all_pars[1:6]
+
+e_eta_12 <- exp(trans_params[1])
+e_eta_13 <- exp(trans_params[2])
+denom_1 <- 1 + e_eta_12 + e_eta_13
+Gamma_matrix[1, 1] <- 1 / denom_1
+Gamma_matrix[1, 2] <- e_eta_12 / denom_1
+Gamma_matrix[1, 3] <- e_eta_13 / denom_1
+
+e_eta_21 <- exp(trans_params[3])
+e_eta_23 <- exp(trans_params[4])
+denom_2 <- e_eta_21 + 1 + e_eta_23
+Gamma_matrix[2, 1] <- e_eta_21 / denom_2
+Gamma_matrix[2, 2] <- 1 / denom_2
+Gamma_matrix[2, 3] <- e_eta_23 / denom_2
+
+e_eta_31 <- exp(trans_params[5])
+e_eta_32 <- exp(trans_params[6])
+denom_3 <- e_eta_31 + e_eta_32 + 1
+Gamma_matrix[3, 1] <- e_eta_31 / denom_3
+Gamma_matrix[3, 2] <- e_eta_32 / denom_3
+Gamma_matrix[3, 3] <- 1 / denom_3
+
+cat("\nState Transition Probability Matrix (Gamma):\n")
+print(round(Gamma_matrix, 4))
+
+post_probs <- posterior(best_model_fit)
+most_likely_state_idx <- apply(post_probs[, c("S1", "S2", "S3")], 1, which.max)
+
+state_map <- match(c(names(sorted_lambdas[1]), names(sorted_lambdas[2]), names(sorted_lambdas[3])),
+                   c("State1", "State2", "State3"))
+
+state_labels_plot <- paste0("State ", c(1, 2, 3), " (",
+                            ifelse(state_map[1] == 1, "Low", ifelse(state_map[1] == 2, "Medium", "High")), "/",
+                            ifelse(state_map[2] == 1, "Low", ifelse(state_map[2] == 2, "Medium", "High")), "/",
+                            ifelse(state_map[3] == 1, "Low", ifelse(state_map[3] == 2, "Medium", "High")), " Cases)")
+
+mapped_state_labels <- character(length(most_likely_state_idx))
+for (j in 1:n_obs) {
+  original_state_index <- most_likely_state_idx[j]
+  if (original_state_index == state_map[1]) {
+    mapped_state_labels[j] <- "State 1 (Low Cases)"
+  } else if (original_state_index == state_map[2]) {
+    mapped_state_labels[j] <- "State 2 (Medium Cases)"
+  } else {
+    mapped_state_labels[j] <- "State 3 (High Cases)"
+  }
+}
+most_likely_state_factor <- factor(mapped_state_labels, levels = c("State 1 (Low Cases)", "State 2 (Medium Cases)", "State 3 (High Cases)"))
+
+plot_df <- data.frame(
+  Date = time_dates,
+  PolioCases = polio_cases,
+  MostLikelyState = most_likely_state_factor
+)
+
+ggplot(plot_df, aes(x = Date, y = PolioCases)) +
+  geom_line(aes(color = MostLikelyState), size = 0.8) +
+  geom_point(aes(color = MostLikelyState), size = 1.5, alpha = 0.7) +
+  labs(
+    title = "Monthly Polio Cases (1970-1983) with Hidden HMM States",
+    subtitle = paste0("AIC: ", round(AIC(best_model_fit), 2),
+                      " | λ1(Low): ", round(sorted_lambdas[1], 2),
+                      " | λ2(Med): ", round(sorted_lambdas[2], 2),
+                      " | λ3(High): ", round(sorted_lambdas[3], 2)),
+    x = "Date",
+    y = "Number of Polio Cases"
+  ) +
+  scale_color_manual(name = "Most Likely State",
+                     values = c("State 1 (Low Cases)" = "blue",
+                                "State 2 (Medium Cases)" = "green",
+                                "State 3 (High Cases)" = "red")) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+
+```
+**AIC of the best fitted HMM:  529.9555**
+
+- State corresponding to medium lambda: State1 (λ = 1.2376)
+- State corresponding to highest lambda: State2 (λ = 2.0048)
+- State corresponding to lowest lambda: State3 (λ = 1.0956)
+
+
+**State Transition Probability Matrix (Gamma)**
+|  | To S1  | To S2  | To S3  |
+|-----------|--------|--------|--------|
+| S1   | 0.2119 | 0.5761 | 0.2119 |
+| S2   | 0.2233 | 0.2233 | 0.5533 |
+| S3   | 0.3542 | 0.3229 | 0.3229 |
+
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/PeerGraded_Part_C.png)
