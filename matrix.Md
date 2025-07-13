@@ -7,16 +7,8 @@
 
 
 **(b) Eigenvalues and Eigenvectors**
+![](https://github.com/MishraSubash/imageCollection/blob/main/matrix%20PeerGraded%20PartB.pdf)
 
-*The eigenvectors are presented in transposed form because it was challenging to write them vertically while converting to PDF*
-
-
-	- Eigenvalue 2; Eigenvector: (1,0,0,0,0,0)^T
-	- Eigenvalue 1.5; Eigenvector:(0,1,0,0,0,0)^T
-	- Eigenvalue -3; Eigenvector: (0,0,1,0,0,0)^T
-	- Eigenvalue -1; Eigenvector:(0,0,0,1,0,0)^T
-	- Eigenvalue 0.5; Eigenvector: (0,0,0,0,1,0)^T
-	- Eigenvalue -0.5; Eigenvector: (0,0,0,0,0,1)^T
 
 **Explanation for not showing work:** 
 
