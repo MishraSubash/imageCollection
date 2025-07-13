@@ -7,7 +7,7 @@
 
 
 **(b) Eigenvalues and Eigenvectors**
-![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/unnamed_edited.jpg)
+![](https://github.com/MishraSubash/imageCollection/blob/main/Resized_Image.jpg)
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/unammmed2_edited.jpg)
 
 **Explanation for not showing work for all:** 
