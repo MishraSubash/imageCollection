@@ -7,7 +7,7 @@
 
 
 **(b) Eigenvalues and Eigenvectors**
-![](https://github.com/MishraSubash/imageCollection/blob/main/matrix%20PeerGraded%20PartB.pdf)
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/unnamed.jpg)
 
 
 **Explanation for not showing work:** 
