@@ -12,8 +12,8 @@
 
 **Explanation for not showing work for all:** 
 
-        For a diagonal matrix, the properties of eigenvalues and eigenvectors are straightforward: the eigenvalues are precisely the diagonal entries, 
-        and the corresponding eigenvectors are the standard basis vectors. This pattern holds for all diagonal entries, making redundant calculations unnecessary.
+For a diagonal matrix, the properties of eigenvalues and eigenvectors are straightforward: the eigenvalues are precisely the diagonal entries, 
+and the corresponding eigenvectors are the standard basis vectors. This pattern holds for all diagonal entries, making redundant calculations unnecessary.
 
 **(c) Computation of Frobenius, Operator, and Nuclear norms of the matrix**
 - **Frobenius Norm:** The Frobenius norm is the square root of the sum of the squares of the diagonal elements. 
@@ -41,11 +41,11 @@
 They are not equal. 
 
 **Why or why not?**
-        For a general matrix, the operator norm is defined as the largest singular value, not necessarily the largest eigenvalue. 
-        Singular values are always non-negative. While the eigenvalues can be negative, the singular values are the absolute 
-        values of the eigenvalues for symmetric matrices. In this case, the largest singular value (3) 
-        comes from the eigenvalue -3 (i.e., ∣−3∣=3), which is larger than the largest positive eigenvalue (2). 
-        Therefore, the largest eigenvalue (2) is not equal to the operator norm (3) because the operator norm considers the magnitude of the eigenvalues.
+For a general matrix, the operator norm is defined as the largest singular value, not necessarily the largest eigenvalue. 
+Singular values are always non-negative. While the eigenvalues can be negative, the singular values are the absolute 
+values of the eigenvalues for symmetric matrices. In this case, the largest singular value (3) 
+comes from the eigenvalue -3 (i.e., ∣−3∣=3), which is larger than the largest positive eigenvalue (2). 
+Therefore, the largest eigenvalue (2) is not equal to the operator norm (3) because the operator norm considers the magnitude of the eigenvalues.
 
 
 ## Python Code: 
