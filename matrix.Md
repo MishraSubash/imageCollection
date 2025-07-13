@@ -41,6 +41,7 @@ and the corresponding eigenvectors are the standard basis vectors. This pattern 
 They are not equal. 
 
 **Why or why not?**
+
 For a general matrix, the operator norm is defined as the largest singular value, not necessarily the largest eigenvalue. 
 Singular values are always non-negative. While the eigenvalues can be negative, the singular values are the absolute 
 values of the eigenvalues for symmetric matrices. In this case, the largest singular value (3) 
