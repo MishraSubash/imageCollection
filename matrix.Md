@@ -8,7 +8,7 @@
 
 **(b) Eigenvalues and Eigenvectors**
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/unnamed.jpg)
-
+![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/unammmed2.jpg)
 
 **Explanation for not showing work:** 
 
