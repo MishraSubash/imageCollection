@@ -9,6 +9,7 @@
 **(b) Eigenvalues and Eigenvectors**
 
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/medium%20Sized.jpg)
+
 ![](https://raw.githubusercontent.com/MishraSubash/imageCollection/refs/heads/main/medium_Sized.jpg)
 
 **Explanation for not showing work for all:** 
